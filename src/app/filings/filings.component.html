@@ -1,0 +1,39 @@
+<ng-container *ngIf="!(store.errors | async).length">
+  <div class="row justify-content-center mb-4">
+    <div class="col-8 align-items-center">
+      <h4>{{(store.companyName | async)}}</h4>
+      <p> Page: {{page + 1}}</p>
+    </div>
+    <div *ngFor="let filing of (store.companyFilings | async)" class="col-8 my-2 py-2" style="border-radius: 25px;background-color: #e6e6e6;">
+      <div class="row">
+        <div class="col-2" style="border-right:1px solid #969696">
+          {{filing.dateFiled}}
+        </div>
+        <div class="col-1" style="border-right:1px solid #969696">
+          {{filing.type}}
+        </div>
+        <div class="col-1" style="border-right:1px solid #969696">
+          <a [attr.href]="filing.filingHREF">Link</a>
+        </div>
+        <div class="col-auto">
+          {{filing.formName}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-5">
+    <div *ngIf="page > 0" class="col-auto btn" (click)="searchPreviousPage()" style="position: absolute; left: 3rem;">
+      <button>Previous</button>
+    </div>
+    <div class="col-auto btn" (click)="searchNextPage()" style="position: absolute; right: 3rem;">
+      <button>Next</button>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="(store.errors | async).length">
+  <div class="row justify-content-center mt-5">
+    <p *ngFor="let error of (store.errors | async)" style="color:red">
+      {{error}}
+    </p>
+  </div>
+</ng-container>

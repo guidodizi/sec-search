@@ -4,4 +4,5 @@
     <h1>Search SEC's EDGAR</h1>
   </div>
   <app-search-bar></app-search-bar>
+  <app-filings *ngIf="(store.companyName | async) || (store.errors | async).length"></app-filings>
 </div>

@@ -4,9 +4,9 @@
   </div>
   <div class="col-4 mt-3">
     <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="AAPL">
+      <input type="text" class="form-control" (keydown.enter)="search()" placeholder="an example could be: AAPL" [(ngModel)]="company">
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button">Search</button>
+        <button class="btn btn-outline-secondary" type="button" (click)="search()">Search</button>
       </div>
     </div>
   </div>
