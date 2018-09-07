@@ -21,6 +21,8 @@ export class SearchBarComponent implements OnInit {
   search() {
     //set Company trading symbol onto store
     this.store.setCompany(this.company);
+    //reset page
+    this.store.setPage(0);
     //request data and store it
     this.edgar.getFillings(this.company, this.page).subscribe((data: ServerResponse) => {
       if (data.errors.length) {
