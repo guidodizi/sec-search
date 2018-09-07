@@ -22,11 +22,11 @@
     </div>
   </div>
   <div class="row mb-5">
-    <div *ngIf="page > 0" class="col-auto btn" (click)="searchPreviousPage()" style="position: absolute; left: 3rem;">
-      <button>Previous</button>
+    <div *ngIf="page > 0" class="col-auto btn" style="position: absolute; left: 3rem;">
+      <button type="button" (click)="searchPreviousPage()" class="btn btn-outline-secondary">Previous</button>
     </div>
-    <div class="col-auto btn" (click)="searchNextPage()" style="position: absolute; right: 3rem;">
-      <button>Next</button>
+    <div class="col-auto btn" style="position: absolute; right: 3rem;">
+      <button type="button" (click)="searchNextPage()" class="btn btn-outline-secondary">Next</button>
     </div>
   </div>
 </ng-container>

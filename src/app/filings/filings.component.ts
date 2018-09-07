@@ -27,7 +27,11 @@ export class FilingsComponent implements OnInit {
       } else {
         this.store.setCompanyName(data.result.name);
         this.store.setCompanyFilings(data.result.filings);
-        window.scrollTo(0, 0);
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
       }
     });
   }
@@ -40,7 +44,11 @@ export class FilingsComponent implements OnInit {
       } else {
         this.store.setCompanyName(data.result.name);
         this.store.setCompanyFilings(data.result.filings);
-        window.scrollTo(0, 0);
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
       }
     });
   }
