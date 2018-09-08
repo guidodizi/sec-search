@@ -11,11 +11,24 @@ import { EdgarService } from "../services/edgar.service";
 export class FilingsComponent implements OnInit {
   company: string;
   page: number;
+  filings: Filings[];
+  endData = false;
   constructor(private edgar: EdgarService, private store: StoreService) {}
 
   ngOnInit() {
     this.store.page.subscribe(page => (this.page = page));
     this.store.company.subscribe(company => (this.company = company));
+    this.store.companyFilings.subscribe(filings => {
+      if (filings === this.filings) {
+        this.endData = true;
+      }
+      this.filings = filings;
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: "smooth"
+      });
+    });
   }
 
   searchNextPage() {
@@ -27,11 +40,6 @@ export class FilingsComponent implements OnInit {
       } else {
         this.store.setCompanyName(data.result.name);
         this.store.setCompanyFilings(data.result.filings);
-        window.scroll({
-          top: 0,
-          left: 0,
-          behavior: "smooth"
-        });
       }
     });
   }
@@ -44,11 +52,6 @@ export class FilingsComponent implements OnInit {
       } else {
         this.store.setCompanyName(data.result.name);
         this.store.setCompanyFilings(data.result.filings);
-        window.scroll({
-          top: 0,
-          left: 0,
-          behavior: "smooth"
-        });
       }
     });
   }

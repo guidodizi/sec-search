@@ -5,7 +5,7 @@
       <p> Page: {{page + 1}}</p>
     </div>
     <div *ngFor="let filing of (store.companyFilings | async)" class="col-8 my-2 py-2" style="border-radius: 25px;background-color: #e6e6e6;">
-      <div class="row">
+      <div class="row align-items-center">
         <div class="col-2" style="border-right:1px solid #969696">
           {{filing.dateFiled}}
         </div>
@@ -13,9 +13,9 @@
           {{filing.type}}
         </div>
         <div class="col-1" style="border-right:1px solid #969696">
-          <a [attr.href]="filing.filingHREF">Link</a>
+          <a target="_blank" [attr.href]="filing.filingHREF">Link</a>
         </div>
-        <div class="col-auto">
+        <div class="col-auto" style="font-size:0.8rem">
           {{filing.formName}}
         </div>
       </div>
@@ -25,7 +25,7 @@
     <div *ngIf="page > 0" class="col-auto btn" style="position: absolute; left: 3rem;">
       <button type="button" (click)="searchPreviousPage()" class="btn btn-outline-secondary">Previous</button>
     </div>
-    <div class="col-auto btn" style="position: absolute; right: 3rem;">
+    <div *ngIf="!endData" class="col-auto btn" style="position: absolute; right: 3rem;">
       <button type="button" (click)="searchNextPage()" class="btn btn-outline-secondary">Next</button>
     </div>
   </div>

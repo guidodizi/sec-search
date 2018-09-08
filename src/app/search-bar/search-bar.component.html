@@ -6,7 +6,14 @@
     <div class="input-group mb-3">
       <input type="text" class="form-control" (keydown.enter)="search()" placeholder="an example could be: AAPL" [(ngModel)]="company">
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" (click)="search()">Search</button>
+        <button class="btn btn-outline-secondary" type="button" (click)="search()" style="width: inital">
+          <ng-container *ngIf="!searching">
+            Search
+          </ng-container>
+          <ng-container *ngIf="searching">
+            <i class="fa fa-circle-notch fa-spin"></i>
+          </ng-container>
+        </button>
       </div>
     </div>
   </div>

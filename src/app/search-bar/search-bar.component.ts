@@ -11,6 +11,7 @@ import { ServerResponse } from "../interfaces/server";
 export class SearchBarComponent implements OnInit {
   company: string;
   page: number;
+  searching = false;
   constructor(private edgar: EdgarService, private store: StoreService) {}
 
   ngOnInit() {
@@ -19,18 +20,28 @@ export class SearchBarComponent implements OnInit {
   }
 
   search() {
+    this.searching = true;
     //set Company trading symbol onto store
     this.store.setCompany(this.company);
     //reset page
     this.store.setPage(0);
+
+    //
     //request data and store it
-    this.edgar.getFillings(this.company, this.page).subscribe((data: ServerResponse) => {
-      if (data.errors.length) {
-        this.store.setErrors(data.errors);
-      } else {
-        this.store.setCompanyName(data.result.name);
-        this.store.setCompanyFilings(data.result.filings);
+    this.edgar.getFillings(this.company, this.page).subscribe(
+      (data: ServerResponse) => {
+        if (data.errors.length) {
+          this.store.setErrors(data.errors);
+        } else {
+          this.store.setCompanyName(data.result.name);
+          this.store.setCompanyFilings(data.result.filings);
+          this.searching = false;
+        }
+      },
+      err => {
+        this.store.setErrors([err]);
+        this.searching = false;
       }
-    });
+    );
   }
 }
