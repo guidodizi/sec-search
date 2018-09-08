@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { EdgarService } from "../services/edgar.service";
 import { StoreService } from "../services/storeServices/store.service";
-import { ServerResponse } from "../interfaces/server";
+import { ServerResponse, Filings } from "../interfaces/server";
 
 @Component({
   selector: "app-search-bar",
@@ -11,12 +11,14 @@ import { ServerResponse } from "../interfaces/server";
 export class SearchBarComponent implements OnInit {
   company: string;
   page: number;
+  filings: Filings[];
   searching = false;
   constructor(private edgar: EdgarService, private store: StoreService) {}
 
   ngOnInit() {
     this.store.page.subscribe(page => (this.page = page));
     this.store.company.subscribe(company => (this.company = company));
+    this.store.companyFilings.subscribe(filings => (this.filings = filings));
   }
 
   search() {
@@ -33,10 +35,16 @@ export class SearchBarComponent implements OnInit {
         if (data.errors.length) {
           this.store.setErrors(data.errors);
         } else {
+          this.store.setErrors([]);
           this.store.setCompanyName(data.result.name);
-          this.store.setCompanyFilings(data.result.filings);
-          this.searching = false;
+          //while not end of filings, update them
+          if (data.result.filings.length) {
+            this.store.setCompanyFilings(data.result.filings);
+          } else {
+            this.store.setCompanyFilings(this.filings);
+          }
         }
+        this.searching = false;
       },
       err => {
         this.store.setErrors([err]);

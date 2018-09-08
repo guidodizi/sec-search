@@ -32,27 +32,46 @@ export class FilingsComponent implements OnInit {
   }
 
   searchNextPage() {
-    const newPage = ++this.page;
-    this.store.setPage(newPage);
-    this.edgar.getFillings(this.company, this.page).subscribe((data: ServerResponse) => {
+    let newPage = ++this.page;
+    this.edgar.getFillings(this.company, newPage).subscribe((data: ServerResponse) => {
       if (data.errors.length) {
         this.store.setErrors(data.errors);
       } else {
+        this.store.setErrors([]);
+
         this.store.setCompanyName(data.result.name);
-        this.store.setCompanyFilings(data.result.filings);
+        //while not end of filings, update them
+        if (data.result.filings.length) {
+          this.store.setCompanyFilings(data.result.filings);
+        } else {
+          //page rollback
+          newPage = --newPage;
+          this.store.setCompanyFilings(this.filings);
+        }
       }
+      //save pagecount
+      this.store.setPage(newPage);
     });
   }
   searchPreviousPage() {
-    const newPage = --this.page;
-    this.store.setPage(newPage);
-    this.edgar.getFillings(this.company, this.page).subscribe((data: ServerResponse) => {
+    let newPage = --this.page;
+    this.edgar.getFillings(this.company, newPage).subscribe((data: ServerResponse) => {
       if (data.errors.length) {
         this.store.setErrors(data.errors);
       } else {
+        this.store.setErrors([]);
         this.store.setCompanyName(data.result.name);
-        this.store.setCompanyFilings(data.result.filings);
+        //while not end of filings, update them
+        if (data.result.filings.length) {
+          this.store.setCompanyFilings(data.result.filings);
+        } else {
+          //page rollback
+          newPage = ++newPage;
+          this.store.setCompanyFilings(this.filings);
+        }
       }
+      //save pagecount
+      this.store.setPage(newPage);
     });
   }
 }
