@@ -19,6 +19,7 @@ export class FilingsComponent implements OnInit {
     this.store.page.subscribe(page => (this.page = page));
     this.store.company.subscribe(company => (this.company = company));
     this.store.companyFilings.subscribe(filings => {
+      //page requested exceeds available filings
       if (filings === this.filings) {
         this.endData = true;
       }
@@ -38,12 +39,11 @@ export class FilingsComponent implements OnInit {
         this.store.setErrors(data.errors);
       } else {
         this.store.setErrors([]);
-
         this.store.setCompanyName(data.result.name);
-        //while not end of filings, update them
         if (data.result.filings.length) {
           this.store.setCompanyFilings(data.result.filings);
         } else {
+          //when page exceeds available filings, server responds an empty array
           //page rollback
           newPage = --newPage;
           this.store.setCompanyFilings(this.filings);
@@ -61,10 +61,10 @@ export class FilingsComponent implements OnInit {
       } else {
         this.store.setErrors([]);
         this.store.setCompanyName(data.result.name);
-        //while not end of filings, update them
         if (data.result.filings.length) {
           this.store.setCompanyFilings(data.result.filings);
         } else {
+          //when page exceeds available filings, server responds an empty array
           //page rollback
           newPage = ++newPage;
           this.store.setCompanyFilings(this.filings);

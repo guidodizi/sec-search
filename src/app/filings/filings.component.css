@@ -1,3 +1,30 @@
 :host {
   width: 100%;
 }
+
+.filing {
+  border-radius: 25px;
+  background-color: #f5f5f5;
+}
+
+.splitter {
+  border-right: 1px solid #969696;
+}
+
+.form-name {
+  font-size: 0.8rem;
+}
+
+.left-button {
+  position: absolute;
+  left: 3rem;
+}
+
+.right-button {
+  position: absolute;
+  right: 3rem;
+}
+
+.error {
+  color: red;
+}

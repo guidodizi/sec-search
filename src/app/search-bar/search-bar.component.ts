@@ -37,10 +37,11 @@ export class SearchBarComponent implements OnInit {
         } else {
           this.store.setErrors([]);
           this.store.setCompanyName(data.result.name);
-          //while not end of filings, update them
           if (data.result.filings.length) {
             this.store.setCompanyFilings(data.result.filings);
           } else {
+            //when page exceeds available filings, server responds an empty array
+            //set company filings with past filings, so as to keep showing data
             this.store.setCompanyFilings(this.filings);
           }
         }
