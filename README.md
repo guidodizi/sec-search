@@ -10,3 +10,14 @@ To run this project locally, run:
 `ng serve`
 
 A deployed version of this code can be found at [Sec-Search](https://sec-search.herokuapp.com)
+
+## Basic API Documentation
+
+### Parameters
+There are two parameters for the API:
+  * `company: string` - Company trading symbol, this could be *aapl* for Apple Inc, *msft* for Microsoft, etc.
+  * `page?: number` - this parameter is *optional*, if not given, will default to 0. A page that exceeds count of available filings will return an empty array of filings
+ 
+ ### Route
+  https://*url*/{*company*}/{*page?*}
+  
