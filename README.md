@@ -9,4 +9,4 @@ Angular 6 project for searching companies SEC filings based on their trading sym
 To run this project locally, run:
 `ng serve`
 
-A deployed version of this code can be found at [Sec-Search](sec-search.herokuapp.com)
+A deployed version of this code can be found at [Sec-Search](https://sec-search.herokuapp.com)
