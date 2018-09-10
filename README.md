@@ -10,3 +10,4 @@ To run this project locally, run:
 `ng serve`
 
 A deployed version of this code can be found at [Sec-Search](https://sec-search.herokuapp.com)
+
