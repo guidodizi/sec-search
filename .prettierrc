@@ -1,0 +1,18 @@
+{
+  "trailingComma": "none",
+  "useTabs": false,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "arrowParens": "avoid",
+  "printWidth": 100,
+  "semi": true,
+  "parser": "typescript",
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ]
+}

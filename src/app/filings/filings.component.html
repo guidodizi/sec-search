@@ -2,9 +2,9 @@
   <div class="row justify-content-center mb-4">
     <div class="col-8 align-items-center">
       <h4>{{(store.companyName | async)}}</h4>
-      <p> Page: {{page + 1}}</p>
+      <p>Page: {{page + 1}}</p>
     </div>
-    <div *ngFor="let filing of (store.companyFilings | async)" class="col-8 my-2 py-2 filing">
+    <div *ngFor="let filing of (filings | async)" class="col-8 my-2 py-2 filing">
       <div class="row align-items-center">
         <div class="col-2 splitter">
           {{filing.dateFiled}}
@@ -23,10 +23,14 @@
   </div>
   <div class="row mb-5">
     <div *ngIf="page > 0" class="col-auto btn left-button">
-      <button type="button" (click)="searchPreviousPage()" class="btn btn-outline-secondary">Previous</button>
+      <button type="button" (click)="searchPreviousPage()" class="btn btn-outline-secondary">
+        Previous
+      </button>
     </div>
-    <div *ngIf="!endData" class="col-auto btn right-button">
-      <button type="button" (click)="searchNextPage()" class="btn btn-outline-secondary">Next</button>
+    <div *ngIf="!(endData | async)" class="col-auto btn right-button">
+      <button type="button" (click)="searchNextPage()" class="btn btn-outline-secondary">
+        Next
+      </button>
     </div>
   </div>
 </ng-container>

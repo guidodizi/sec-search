@@ -8,5 +8,5 @@ import { StoreService } from "./services/storeServices/store.service";
 })
 export class AppComponent {
   title = "Sec Edgar search";
-  constructor(private store: StoreService) {}
+  constructor(public store: StoreService) {}
 }

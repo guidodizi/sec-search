@@ -1,77 +1,60 @@
-import { Component, OnInit } from "@angular/core";
-import { Filings, ServerResponse } from "../interfaces/server";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Filings } from "../interfaces/server";
 import { StoreService } from "../services/storeServices/store.service";
 import { EdgarService } from "../services/edgar.service";
+import { Subscription, Observable } from "rxjs";
+import { take } from "rxjs/internal/operators/take";
 
 @Component({
   selector: "app-filings",
   templateUrl: "./filings.component.html",
   styleUrls: ["./filings.component.css"]
 })
-export class FilingsComponent implements OnInit {
+export class FilingsComponent implements OnInit, OnDestroy {
+  pageSub: Subscription;
+  companySub: Subscription;
+
   company: string;
   page: number;
-  filings: Filings[];
-  endData = false;
-  constructor(private edgar: EdgarService, private store: StoreService) {}
+  filings: Observable<Filings[]>;
+  endData: Observable<boolean>;
+
+  constructor(private edgar: EdgarService, public store: StoreService) {}
 
   ngOnInit() {
-    this.store.page.subscribe(page => (this.page = page));
-    this.store.company.subscribe(company => (this.company = company));
-    this.store.companyFilings.subscribe(filings => {
-      //page requested exceeds available filings
-      if (filings === this.filings) {
-        this.endData = true;
-      }
-      this.filings = filings;
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: "smooth"
-      });
-    });
+    this.endData = this.store.endFilings;
+    this.filings = this.store.companyFilings;
+    this.pageSub = this.store.page.subscribe(page => (this.page = page));
+    this.companySub = this.store.company.subscribe(company => (this.company = company));
   }
 
   searchNextPage() {
-    let newPage = ++this.page;
-    this.edgar.getFillings(this.company, newPage).subscribe((data: ServerResponse) => {
-      if (data.errors.length) {
-        this.store.setErrors(data.errors);
-      } else {
-        this.store.setErrors([]);
-        this.store.setCompanyName(data.result.name);
-        if (data.result.filings.length) {
-          this.store.setCompanyFilings(data.result.filings);
-        } else {
-          //when page exceeds available filings, server responds an empty array
-          //page rollback
-          newPage = --newPage;
-          this.store.setCompanyFilings(this.filings);
-        }
-      }
-      //save pagecount
-      this.store.setPage(newPage);
-    });
+    this.edgar
+      .getFillings(this.company, this.page + 1, "next")
+      .pipe(take(1))
+      .subscribe(() => {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+      });
   }
   searchPreviousPage() {
-    let newPage = --this.page;
-    this.edgar.getFillings(this.company, newPage).subscribe((data: ServerResponse) => {
-      if (data.errors.length) {
-        this.store.setErrors(data.errors);
-      } else {
-        this.store.setErrors([]);
-        this.store.setCompanyName(data.result.name);
-        if (data.result.filings.length) {
-          this.store.setCompanyFilings(data.result.filings);
-        } else {
-          //when page exceeds available filings, server responds an empty array
-          //page rollback
-          newPage = ++newPage;
-          this.store.setCompanyFilings(this.filings);
-        }
-      }
-      //save pagecount
-      this.store.setPage(newPage);
-    });
+    this.edgar
+      .getFillings(this.company, this.page - 1, "previous")
+      .pipe(take(1))
+      .subscribe(() => {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.pageSub) this.pageSub.unsubscribe();
+    if (this.companySub) this.companySub.unsubscribe();
   }
 }
