@@ -1,15 +1,16 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { catchError, switchMap, take, filter } from "rxjs/operators";
+import { catchError, take, filter } from "rxjs/operators";
 import { throwError, of, BehaviorSubject } from "rxjs";
 import { ServerResponse } from "../interfaces/server";
 import { StoreService } from "./storeServices/store.service";
-
+import { environment as env } from "../../environments/environment";
 @Injectable({
   providedIn: "root"
 })
 export class EdgarService {
-  private uri = "https://sec-search-backend.herokuapp.com";
+  private uri = env.api_url;
+
   constructor(private http: HttpClient, private store: StoreService) {}
 
   private handleError(error: HttpErrorResponse) {
